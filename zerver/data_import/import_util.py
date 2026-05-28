@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 import os
 import random
@@ -738,13 +739,18 @@ def download_and_export_upload_file(
         shutil.copyfileobj(response.raw, upload_file)
 
 
-def build_realm_emoji(realm_id: int, name: str, id: int, file_name: str) -> ZerverFieldsT:
+def build_realm_emoji(
+        realm_id: int, name: str, id: int, file_name: str, date_created: datetime | None = None
+    ) -> ZerverFieldsT:
+            if date_created is None:
+                        date_created = timezone_now()
     return model_to_dict(
         RealmEmoji(
             realm_id=realm_id,
             name=name,
             id=id,
             file_name=file_name,
+                        date_created=date_created,
         ),
     )
 
